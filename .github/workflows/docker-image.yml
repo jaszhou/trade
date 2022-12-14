@@ -15,5 +15,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag jaszhou/python:latest 
-           docker push jaszhou/python:latest
+      run:  docker build . --file Dockerfile --tag jaszhou/python:latest 
+      run:  docker push jaszhou/python:latest
