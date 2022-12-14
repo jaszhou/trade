@@ -1,35 +1,33 @@
-name: Docker Image CI
-
+name: vampi_docker
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
-
   build:
 
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: docker login
-    env:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
         DOCKER_USER: ${{secrets.DOCKER_USER}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
         repository: jaszhou/python:latest
         tags: latest, ${{ secrets.DOCKER_TOKEN }}
-    run: |
+      run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         
-      
+    - name: Build the Vampi Docker image
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        docker build . --file Dockerfile --tag jaszhou/python:latest
+        
     - name: List images
       run: docker images    
-
-    - name: Build the Docker image
-      run:  docker build . --file Dockerfile --tag jaszhou/python:latest 
-
     - name: Docker Push
       run: docker push ${{secrets.DOCKER_USER}}/python:latest
-
