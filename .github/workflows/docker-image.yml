@@ -17,7 +17,7 @@ jobs:
         DOCKER_USER: ${{secrets.DOCKER_USER}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
         repository: jaszhou/python:latest
-        tags: latest, ${{ secrets.DOCKER_TOKEN }}
+        tags: latest
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         
