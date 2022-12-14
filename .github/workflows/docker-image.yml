@@ -14,6 +14,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      - name: docker login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        repository: jaszhou/python:latest
+        tags: latest, ${{ secrets.DOCKER_TOKEN }}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        
+      
+    - name: List images
+      run: docker images    
+
     - name: Build the Docker image
-      run:  docker build . --file Dockerfile --tag jaszhou/python:latest && docker push jaszhou/python:latest
+      run:  docker build . --file Dockerfile --tag jaszhou/python:latest 
+
+    - name: Docker Push
+      run: docker push ${{secrets.DOCKER_USER}}/python:latest
 
