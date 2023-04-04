@@ -20,6 +20,7 @@ from time import sleep
 
 from binance import ThreadedWebsocketManager
 import random
+from record import *
 
 current_thread_number = 0  #global variable
 max_threads = 5
@@ -180,6 +181,11 @@ def sell(pair,open_price,profit,amount):
 
 def check(pair,interval):
 
+    # check if bought twice
+    if get_trade(pair) > 1:
+        print(f"already bought twice {pair}, skipping ...")
+        return 
+    
     #skip existing pairs
 
     if get_pair_balance(pair) > 0 :
@@ -399,6 +405,8 @@ def start(threadname):
 
                     if r < 90:
                         print("{t} --- buying {p} for amount {a}".format(t=datetime.today(),p=winner_pair,a=amount))
+                        
+                        # record active pairs, if it's the second times, then don't buy it again
                         
 
                         winner = 0
