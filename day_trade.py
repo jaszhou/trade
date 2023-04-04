@@ -407,7 +407,7 @@ def start(threadname):
                         print("{t} --- buying {p} for amount {a}".format(t=datetime.today(),p=winner_pair,a=amount))
                         
                         # record active pairs, if it's the second times, then don't buy it again
-                        
+                        add_trade(winner_pair)
 
                         winner = 0
                         # global winner_score
