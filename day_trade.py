@@ -130,7 +130,14 @@ def get_pair_balance(pair):
     # print(bnb_balance)
     return bnb_balance    
 
-
+def get_balance():
+    # pair ='FTMUSDT'
+    symbol = 'USDT'
+    # print(symbol)
+    bnb_balance = client.get_asset_balance(asset=symbol)
+    bnb_balance = float(bnb_balance['free'])
+    # print(bnb_balance)
+    return bnb_balance    
 
 # check price from time to time, if reach profit level, sell it
 def sell(pair,open_price,profit,amount):
@@ -363,7 +370,7 @@ def start(threadname):
         
         # if amount > 0 :
         # if check_btc_price() and amount > 0 and get_USDT_balance() > 2000 :
-        if check_btc_price() and amount > 0 :
+        if check_btc_price() and amount > 0 and get_balance() > 100 :
 
             #refresh list
             # get_gainer()
