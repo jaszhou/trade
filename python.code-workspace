@@ -2,6 +2,15 @@
 	"folders": [
 		{
 			"path": ".."
+		},
+		{
+			"path": "C:\\Users\\Jason\\django\\mysite"
+		},
+		{
+			"path": "C:\\Users\\Jason\\django\\django-scim2"
+		},
+		{
+			"path": "C:\\Users\\Jason\\django\\my_tennis_club"
 		}
 	]
 }
