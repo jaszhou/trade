@@ -464,7 +464,7 @@ while True:
 
         icp_balance = retry(get_icp_balance)
 
-        max_threads = icp_balance  # the max number of threads
+        max_threads = 2  # the max number of threads
 
         winner=0
         winner_score=WINNER_SCORE_THRESHOLD
