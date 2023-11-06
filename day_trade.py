@@ -38,7 +38,7 @@ winner=0
 
 # set threshold for winner_score, the formula is:
 # if v > 0 and v2 >0 and vol_ratio2 > 1 and check_day_price(pair):
-WINNER_SCORE_THRESHOLD=1
+WINNER_SCORE_THRESHOLD=0.7
 winner_score=WINNER_SCORE_THRESHOLD
 
 winner_pair=""
@@ -410,7 +410,7 @@ def start(threadname):
                     r = RSI(winner_pair)
                     # print("winner pair {p} rsi {r}".format(p=winner_pair, r=r))
 
-                    if r < 90:
+                    if r < 200:
                         print("{t} --- buying {p} for amount {a}".format(t=datetime.today(),p=winner_pair,a=amount))
                         
                         # record active pairs, if it's the second times, then don't buy it again
