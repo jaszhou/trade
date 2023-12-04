@@ -452,38 +452,40 @@ def start(threadname):
 
 
 # main entry here
+if __name__ == "__main__":
+    # volume_dollar('BNBUSDT')
 
-while True:
-        
-        # threads = []
-        # threading.active_count()
-        # while current_thread_number < max_threads :
-        flow_balance = retry(get_flow_balance)
-
-        amount= flow_balance * 10  # the amount for each order
-
-        icp_balance = retry(get_icp_balance)
-
-        max_threads = 2  # the max number of threads
-
-        winner=0
-        winner_score=WINNER_SCORE_THRESHOLD
-        winner_pair=""
-        buy_price=0
-
-        # refresh list every 10 minutes
-        get_gainer()
-        time.sleep(60)
-
-        while threading.active_count() < max_threads :
-      
-            thread = threading.Thread( target=start, args=("Thead-"+str(current_thread_number), ) )
-            thread.start()
-            print(f"active count is {threading.active_count()}")
-        
-            time.sleep(100*random.random())
+    while True:
             
+            # threads = []
+            # threading.active_count()
+            # while current_thread_number < max_threads :
+            flow_balance = retry(get_flow_balance)
 
-        # time.sleep(60*10)
-        # print(f"current thread number is {current_thread_number} and active count is {threading.active_count()}")
+            amount= flow_balance * 10  # the amount for each order
+
+            icp_balance = retry(get_icp_balance)
+
+            max_threads = 4  # the max number of threads
+
+            winner=0
+            winner_score=WINNER_SCORE_THRESHOLD
+            winner_pair=""
+            buy_price=0
+
+            # refresh list every 10 minutes
+            get_gainer()
+            # time.sleep(60)
+
+            while threading.active_count() < max_threads :
         
+                thread = threading.Thread( target=start, args=("Thead-"+str(current_thread_number), ) )
+                thread.start()
+                print(f"active count is {threading.active_count()}")
+            
+                time.sleep(100*random.random())
+                
+
+            time.sleep(60*10)
+            # print(f"current thread number is {current_thread_number} and active count is {threading.active_count()}")
+            

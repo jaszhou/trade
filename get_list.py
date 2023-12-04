@@ -18,7 +18,7 @@ client = Client(api_key, api_secret)
 
 
 
-def get_usdt_pairs(num=30):
+def get_usdt_pairs(num=50):
 
 
     symbols = client.get_ticker()
@@ -28,7 +28,13 @@ def get_usdt_pairs(num=30):
     df = df[~df.symbol.str.contains('UP')]
  
     df = df.astype({'volume':'float'})
-    df = df.sort_values(by="volume", ascending=False)
+    df = df.astype({'lastPrice':'float'})
+    df['v'] = df['volume'] * df['lastPrice']
+
+    # print(df.iloc[1])
+
+    # df = df.sort_values(by="volume", ascending=False)
+    df = df.sort_values(by="v", ascending=False)
     
     df = df['symbol']
     df.head(num).to_csv('trade_pair.csv', index=False)
@@ -136,3 +142,6 @@ def get_trend(pair):
 # print(get_trend("BNBUSDT"))
 
 # p=get_symbol_ticker("RAREUSDT")
+
+if __name__ == "__main__":
+    get_gainer()
