@@ -9,7 +9,7 @@ import requests.exceptions
 from get_list import *
 import sys
 from wilders_rsi_pandas import pandas_rsi
-import logging
+# import logging
 # import datetime
 import time
 from datetime import datetime, timedelta, timezone
@@ -367,7 +367,7 @@ def start(threadname):
 
         current_thread_number+=1
         print(f"thread name is {threadname} current thread number is {current_thread_number}")
-        logging.info(f"thread name is {threadname} current thread number is {current_thread_number}")
+        # logging.info(f"thread name is {threadname} current thread number is {current_thread_number}")
 
         
         # if amount > 0 :
