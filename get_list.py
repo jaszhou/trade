@@ -26,7 +26,8 @@ def get_usdt_pairs(num=50):
     df = df[df.symbol.str.contains('USDT')]
     df = df[~df.symbol.str.contains('DOWN')]
     df = df[~df.symbol.str.contains('UP')]
- 
+    df = df[~df.symbol.str.startswith('USD')] # remove USD* pairs
+
     df = df.astype({'volume':'float'})
     df = df.astype({'lastPrice':'float'})
     df['v'] = df['volume'] * df['lastPrice']
@@ -35,11 +36,13 @@ def get_usdt_pairs(num=50):
 
     # df = df.sort_values(by="volume", ascending=False)
     df = df.sort_values(by="v", ascending=False)
+
+    print(df.head(num))
     
     df = df['symbol']
     df.head(num).to_csv('trade_pair.csv', index=False)
 
-    # print(df)
+    
 
 def retry(fun, max_tries=10):
     for i in range(max_tries):
