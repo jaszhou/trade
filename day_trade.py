@@ -373,7 +373,7 @@ def start(threadname):
         if check_btc_price() and amount > 0 and get_balance() > 100 :
 
             #refresh list
-            # get_gainer()
+            get_gainer()
 
             pair_df = pd.read_csv('trade_pair.csv', index_col=0)
             pair_df = pair_df.reset_index()  # make sure indexes pair with number of rows
