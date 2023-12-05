@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import csv
 import time
-
+import logging
 from binance.enums import *
 from binance.exceptions import BinanceAPIException, BinanceOrderException
 
@@ -37,7 +37,8 @@ def get_usdt_pairs(num=50):
     # df = df.sort_values(by="volume", ascending=False)
     df = df.sort_values(by="v", ascending=False)
 
-    print(df.head(num))
+    # print(df.head(num))
+    logging.info(df.head(num))
     
     df = df['symbol']
     df.head(num).to_csv('trade_pair.csv', index=False)

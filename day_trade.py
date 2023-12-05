@@ -9,7 +9,7 @@ import requests.exceptions
 from get_list import *
 import sys
 from wilders_rsi_pandas import pandas_rsi
-
+import logging
 # import datetime
 import time
 from datetime import datetime, timedelta, timezone
@@ -21,9 +21,10 @@ from time import sleep
 from binance import ThreadedWebsocketManager
 import random
 from record import *
+import math
 
 current_thread_number = 0  #global variable
-max_threads = 5
+max_threads = 4
 random.seed(10)
 
 # init
@@ -365,7 +366,8 @@ def start(threadname):
         global current_thread_number,winner,winner_pair,winner_score,amount,max_threads
 
         current_thread_number+=1
-        # print(f"thread name is {threadname} current thread number is {current_thread_number}")
+        print(f"thread name is {threadname} current thread number is {current_thread_number}")
+        logging.info(f"thread name is {threadname} current thread number is {current_thread_number}")
 
         
         # if amount > 0 :
@@ -374,6 +376,7 @@ def start(threadname):
 
             #refresh list
             get_gainer()
+            print('refresh list')
 
             pair_df = pd.read_csv('trade_pair.csv', index_col=0)
             pair_df = pair_df.reset_index()  # make sure indexes pair with number of rows
@@ -387,7 +390,7 @@ def start(threadname):
                 my_formatter = "{0:.1f}"
                 per = my_formatter.format(per)
 
-                # print("{t} -  checking pair {p} #{num} with {per}% completed".format(t=threadname,p=pair, num=n, per=per))
+                print("{t} -  checking pair {p} #{num} with {per}% completed".format(t=threadname,p=pair, num=n, per=per))
 
                 tries = 5
                 for i in range(tries):
@@ -436,7 +439,7 @@ def start(threadname):
                 winner_score = WINNER_SCORE_THRESHOLD
                 winner_pair = ""
 
-                print("no winner")
+                print("no winner and sleep for 1 min")
                 time.sleep(60) 
             
         else:
@@ -444,9 +447,10 @@ def start(threadname):
             winner_score = WINNER_SCORE_THRESHOLD
             winner_pair = ""
 
-            # print("Sleep for 1 minute, BTC is down or FLOW balance is 0")
+            st = math.ceil(100*random.random())
+            print(f"Sleep for {st} seconds, BTC is down or FLOW balance is 0")
             # time.sleep(60)
-            time.sleep(10*random.random())
+            time.sleep(st)
     
         current_thread_number-=1
 
@@ -466,8 +470,6 @@ if __name__ == "__main__":
 
             icp_balance = retry(get_icp_balance)
 
-            max_threads = 4  # the max number of threads
-
             winner=0
             winner_score=WINNER_SCORE_THRESHOLD
             winner_pair=""
@@ -479,11 +481,13 @@ if __name__ == "__main__":
 
             while threading.active_count() < max_threads :
         
-                thread = threading.Thread( target=start, args=("Thead-"+str(current_thread_number), ) )
+                thread = threading.Thread(target=start, args=("Thead-"+str(current_thread_number), ) )
                 thread.start()
-                print(f"active count is {threading.active_count()}")
+                print(f"active count is {threading.active_count()} max thread {max_threads}")
             
-                time.sleep(100*random.random())
+                st = math.ceil(10*random.random())
+                print(f'sleep for {st} seconds')
+                time.sleep(st)
                 
 
             # time.sleep(60*10)
