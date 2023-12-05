@@ -10,7 +10,7 @@ def add_trade(pair):
         print("record exists")
         trade_record[pair] += 1
     else:
-        print("record does not exist, add record")
+        # print("record does not exist, add record")
         trade_record[pair] = 1
 
     print(trade_record)
@@ -23,8 +23,8 @@ def get_trade(pair):
         
         count = trade_record[pair]
         print(f"record count {count}")
-    else:
-        print("record does not exist")
+    # else:
+    #     print("record does not exist")
        
     return count
 

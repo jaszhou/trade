@@ -24,7 +24,7 @@ from record import *
 import math
 
 current_thread_number = 0  #global variable
-max_threads = 4
+max_threads = 3
 random.seed(10)
 
 # init
@@ -39,7 +39,7 @@ winner=0
 
 # set threshold for winner_score, the formula is:
 # if v > 0 and v2 >0 and vol_ratio2 > 1 and check_day_price(pair):
-WINNER_SCORE_THRESHOLD=0.7
+WINNER_SCORE_THRESHOLD=0.5
 winner_score=WINNER_SCORE_THRESHOLD
 
 winner_pair=""
@@ -299,7 +299,8 @@ def check(pair,interval):
     # score = v2 * vol_ratio2
     score = v * vol_ratio * 100 + v2 * vol_ratio2 * 100
 
-    # print("Score:",score)
+    trend = check_btc_price()
+    print(f"Score:{score} v: {v} v2 {v2} vol_ratio: {vol_ratio} vol_ratio2: {vol_ratio2} check_day_price: {trend}")
 
     r = RSI(pair)
 
@@ -309,8 +310,8 @@ def check(pair,interval):
 
     # if v > 0 and v2 >0 and v3 > 0 and vol_ratio > 1 and vol_ratio2 > 1  and r < 90 :
     #if v > 0 and v2 >0 and v3 > 0 and vol_ratio > 2 and vol_ratio2 > 1 and check_day_price(pair) :
-    # if v > 0 and v2 >0 and vol_ratio > 1 and vol_ratio2 > 1 and check_day_price(pair):
-    if v > 0 and v2 >0 and vol_ratio2 > 1 and check_day_price(pair) and r < 90:
+    if v > 0 and v2 >0 and vol_ratio2 > 1 and trend:
+    # if v > 0 and v2 >0 and vol_ratio2 > 1 and check_day_price(pair) and r < 90:
         print("***************************************")
         # profit=0.05
         my_open_price=close
@@ -402,7 +403,7 @@ def start(threadname):
                         continue
                     break
                
-                #    print("winning score: {w} winner: {win} winning pair:{p} btc: {b}".format(w=winner_score, win=winner,p=winner_pair,b=check_btc_price()))
+                print("winning score: {w} winner: {win} winning pair:{p} btc: {b}".format(w=winner_score, win=winner,p=winner_pair,b=check_btc_price()))
             
             
             if winner > 0 and check_btc_price() :
@@ -485,7 +486,7 @@ if __name__ == "__main__":
                 thread.start()
                 print(f"active count is {threading.active_count()} max thread {max_threads}")
             
-                st = math.ceil(10*random.random())
+                st = math.ceil(50*random.random())
                 print(f'sleep for {st} seconds')
                 time.sleep(st)
                 

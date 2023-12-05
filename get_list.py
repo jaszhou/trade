@@ -56,7 +56,7 @@ def retry(fun, max_tries=10):
 
 def get_gainer():
 
-    get_usdt_pairs(num=50)
+    get_usdt_pairs(num=20)
 
 
 def get_flow_balance():
