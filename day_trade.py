@@ -81,7 +81,6 @@ def check_price(pair):
                  continue
               break
 
-    # candles = client.get_klines(symbol=pair, interval=interval)
     for line in candles:
         del line[6:]
     candles_df = pd.DataFrame(candles, columns=['date', 'open', 'high', 'low', 'close', 'volume'])
