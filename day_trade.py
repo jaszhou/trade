@@ -486,6 +486,6 @@ if __name__ == "__main__":
                 time.sleep(100*random.random())
                 
 
-            time.sleep(60*10)
+            # time.sleep(60*10)
             # print(f"current thread number is {current_thread_number} and active count is {threading.active_count()}")
             
