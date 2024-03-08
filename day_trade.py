@@ -31,7 +31,7 @@ random.seed(10)
 api_key = os.environ.get('binance_api')
 api_secret = os.environ.get('binance_secret')
 
-profit=0.02
+profit=0.1
 
 # set the amount by checking the current balance of FLOW
 amount= get_flow_balance() * 10
