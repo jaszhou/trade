@@ -469,6 +469,8 @@ if __name__ == "__main__":
             amount= flow_balance * 10  # the amount for each order
 
             icp_balance = retry(get_icp_balance)
+            max_threads = icp_balance
+            
 
             winner=0
             winner_score=WINNER_SCORE_THRESHOLD
