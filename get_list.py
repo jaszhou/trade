@@ -22,6 +22,8 @@ def get_usdt_pairs(num=50):
 
 
     symbols = client.get_ticker()
+
+    
     df = pd.DataFrame(symbols)
     df = df[df.symbol.str.contains('USDT')]
     df = df[~df.symbol.str.contains('DOWN')]

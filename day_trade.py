@@ -24,7 +24,7 @@ from record import *
 import math
 
 current_thread_number = 0  #global variable
-max_threads = 3
+max_threads = 5
 random.seed(10)
 
 # init
