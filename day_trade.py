@@ -34,7 +34,9 @@ api_secret = os.environ.get('binance_secret')
 profit=0.1
 
 # set the amount by checking the current balance of FLOW
-amount= get_flow_balance() * 10
+f_balance = retry(get_flow_balance, max_tries=10)
+
+amount= f_balance * 10
 winner=0
 
 # set threshold for winner_score, the formula is:
