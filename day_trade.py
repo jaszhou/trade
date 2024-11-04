@@ -36,7 +36,10 @@ profit=0.1
 # set the amount by checking the current balance of FLOW
 f_balance = retry(get_flow_balance, max_tries=10)
 
-amount= f_balance * 10
+amount = 0
+if f_balance:
+    amount= flow_balance * 10  # the amount for each order
+
 winner=0
 
 # set threshold for winner_score, the formula is:
