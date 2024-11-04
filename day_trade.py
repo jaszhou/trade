@@ -468,7 +468,9 @@ if __name__ == "__main__":
             # while current_thread_number < max_threads :
             flow_balance = retry(get_flow_balance)
 
-            amount= flow_balance * 10  # the amount for each order
+            amount = 0
+            if flow_balance:
+                amount= flow_balance * 10  # the amount for each order
 
             icp_balance = retry(get_icp_balance)
             max_threads = icp_balance
