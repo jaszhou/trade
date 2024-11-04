@@ -38,7 +38,7 @@ f_balance = retry(get_flow_balance, max_tries=10)
 
 amount = 0
 if f_balance:
-    amount= flow_balance * 10  # the amount for each order
+    amount= f_balance * 10  # the amount for each order
 
 winner=0
 
