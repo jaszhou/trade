@@ -1,13 +1,13 @@
 #zsh
 
-docker build -t jaszhou2020/trade .
+docker build -t jaszhou2020/trade:v1.0 .
 
 
 #docker tag jaszhou/python:latest asia-northeast1-docker.pkg.dev/master-vehicle-340623/docker-repository/python
 
 #gcloud auth configure-docker asia-northeast1-docker.pkg.dev
 
-docker push jaszhou2020/trade
+docker push jaszhou2020/trade:v1.0
 
 
 #gcloud container clusters get-credentials cluster-tokyo
