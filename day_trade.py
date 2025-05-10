@@ -26,7 +26,7 @@ import math
 current_thread_number = 0  #global variable
 max_threads = 5
 random.seed(10)
-
+max_hold_minutes = 120   # max holding time in minutes
 # init
 api_key = os.environ.get('binance_api')
 api_secret = os.environ.get('binance_secret')
@@ -168,8 +168,8 @@ def sell(pair,open_price,profit,amount):
              break
 
          
-
-         if (close-open_price)/open_price > profit :
+        # either archive target price or force sell
+         if (close-open_price)/open_price > profit or check_expire(sell_by_time):
         #  if (close-open_price)/open_price > profit and rsi > 80 :
          #if abs(close-open_price)/open_price > profit and trend == "down" :
         #  if (close-open_price)/open_price > profit and trend == "down" :
@@ -190,6 +190,11 @@ def sell(pair,open_price,profit,amount):
              break  # break of sell loop
          else:
             time.sleep(60*5)
+
+
+def check_expire(sell_by_time):
+    current = time.time()
+    return sell_by_time < current
 
 def check(pair,interval):
 
@@ -333,6 +338,7 @@ def check(pair,interval):
         global winner_pair
         global winner
         global buy_price
+        global sell_by_time
         
 
         symbol = pair[:-4]
@@ -430,6 +436,12 @@ def start(threadname):
 
                         order = client.order_market_buy(symbol=winner_pair, quoteOrderQty=amount)
                         
+
+                        global sell_by_time
+                        # end of holding period
+                        eoh = datetime.now() + timedelta(minutes=max_hold_minutes) 
+                        sell_by_time = eoh.timestamp()
+
                         # price = client.get_symbol_ticker(symbol=winner_pair)
                         # open_price = float(price["price"])    
                         # target = open_price * (1+profit)
