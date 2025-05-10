@@ -44,6 +44,7 @@ def get_usdt_pairs(num=50):
     
     df = df['symbol']
     df.head(num).to_csv('trade_pair.csv', index=False)
+    # print(df.head(num))
 
     
 

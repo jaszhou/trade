@@ -482,12 +482,14 @@ if __name__ == "__main__":
             # threading.active_count()
             # while current_thread_number < max_threads :
             flow_balance = retry(get_flow_balance)
+            print(f'flow balance: {flow_balance}')
 
             amount = 0
             if flow_balance:
                 amount= flow_balance * 10  # the amount for each order
 
             icp_balance = retry(get_icp_balance)
+            print(f'icp balance: {icp_balance}')
             if icp_balance:
                 max_threads = icp_balance
             
@@ -498,9 +500,11 @@ if __name__ == "__main__":
             buy_price=0
 
             # refresh list every 10 minutes
+            print('get gainer')
             get_gainer()
             # time.sleep(60)
 
+            print(f'max threads: {max_threads}')
             while threading.active_count() < max_threads :
         
                 thread = threading.Thread(target=start, args=("Thead-"+str(current_thread_number), ) )
