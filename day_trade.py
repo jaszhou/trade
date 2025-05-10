@@ -26,7 +26,7 @@ import math
 current_thread_number = 0  #global variable
 max_threads = 5
 random.seed(10)
-max_hold_minutes = 120   # max holding time in minutes
+max_hold_minutes = 60*12   # max holding time in minutes
 # init
 api_key = os.environ.get('binance_api')
 api_secret = os.environ.get('binance_secret')
