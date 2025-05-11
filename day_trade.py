@@ -31,7 +31,7 @@ max_hold_minutes = 60*12   # max holding time in minutes
 api_key = os.environ.get('binance_api')
 api_secret = os.environ.get('binance_secret')
 
-profit=0.1
+profit=0.05
 
 # set the amount by checking the current balance of FLOW
 f_balance = retry(get_flow_balance, max_tries=10)
