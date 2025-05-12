@@ -26,7 +26,7 @@ jobs:
       run: |
         python3.12 -m pip install --upgrade setuptools
         pip install -r requirements.txt
-        docker build . --file Dockerfile --tag jaszhou2020/trade:latest
+        docker build . --file Dockerfile --tag jaszhou2020/python:latest
         
     - name: List images
       run: docker images    
