@@ -169,8 +169,7 @@ def check_expire(sell_by_time: datetime):
 # check price from time to time, if reach profit level, sell it
 def sell(pair,open_price,profit,amount,sell_by_time):
     # print("Total score for {n} is {s}".format(n=name, s=score))
-     print("Pair {p} open price {o} profit {e} amount {a} sell by {s}".format(p=pair, o=open_price, e=profit, a=amount, s=sell_by_time))
-
+ 
      while True:
          price = client.get_symbol_ticker(symbol=pair)
          close = float(price["price"])
@@ -182,6 +181,7 @@ def sell(pair,open_price,profit,amount,sell_by_time):
          trend = get_trend(pair)
 
          print("{d} -- {p} price {c} rsi {r} buy price {b} target {tg} trend {trend}".format(d=datetime.today(), p=pair, c=round(close,4), r=rsi, b=round(open_price,4), tg=round(target,4), trend=trend))
+         print("Pair {p} open price {o} profit {e} amount {a} sell by {s}".format(p=pair, o=open_price, e=profit, a=amount, s=sell_by_time))
 
         #  print("current price {p}".format(p=close))
          balance = get_pair_balance(pair)
