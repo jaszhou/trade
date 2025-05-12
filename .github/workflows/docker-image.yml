@@ -31,4 +31,4 @@ jobs:
     - name: List images
       run: docker images    
     - name: Docker Push
-      run: docker push ${{secrets.DOCKER_USER}}/trade:latest
+      run: docker push ${{secrets.DOCKER_USER}}/python:latest
