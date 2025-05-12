@@ -144,10 +144,32 @@ def get_balance():
     # print(bnb_balance)
     return bnb_balance    
 
+
+
+def convert_timestamp_to_datetime(timestamp):
+    """
+    Convert a timestamp to a datetime object.
+    
+    Args:
+        timestamp (int): The timestamp to convert.
+        
+    Returns:
+        datetime: The corresponding datetime object.
+    """
+    # Convert timestamp to seconds (if it's in milliseconds)
+    timestamp_in_seconds = timestamp / 1000
+    
+    # Convert to datetime object
+    return datetime.fromtimestamp(timestamp_in_seconds)
+
+def check_expire(sell_by_time: datetime):
+    current = time.time()
+    return sell_by_time < current
+
 # check price from time to time, if reach profit level, sell it
-def sell(pair,open_price,profit,amount):
+def sell(pair,open_price,profit,amount,sell_by_time):
     # print("Total score for {n} is {s}".format(n=name, s=score))
-     print("Pair {p} open price {o} profit {e} amount {a} ".format(p=pair, o=open_price, e=profit, a=amount))
+     print("Pair {p} open price {o} profit {e} amount {a} sell by {s}".format(p=pair, o=open_price, e=profit, a=amount, s=sell_by_time))
 
      while True:
          price = client.get_symbol_ticker(symbol=pair)
@@ -166,10 +188,9 @@ def sell(pair,open_price,profit,amount):
          if balance == 0:
              print("manual override, skipping...")
              break
-
          
-        # either archive target price or force sell
-         if (close-open_price)/open_price > profit or check_expire(sell_by_time):
+         
+         if ((close-open_price)/open_price > profit) or check_expire(sell_by_time):
         #  if (close-open_price)/open_price > profit and rsi > 80 :
          #if abs(close-open_price)/open_price > profit and trend == "down" :
         #  if (close-open_price)/open_price > profit and trend == "down" :
@@ -192,9 +213,7 @@ def sell(pair,open_price,profit,amount):
             time.sleep(60*5)
 
 
-def check_expire(sell_by_time):
-    current = time.time()
-    return sell_by_time < current
+
 
 def check(pair,interval):
 
@@ -437,19 +456,10 @@ def start(threadname):
                         order = client.order_market_buy(symbol=winner_pair, quoteOrderQty=amount)
                         
 
-                        global sell_by_time
                         # end of holding period
-                        eoh = datetime.now() + timedelta(minutes=max_hold_minutes) 
-                        sell_by_time = eoh.timestamp()
-
-                        # price = client.get_symbol_ticker(symbol=winner_pair)
-                        # open_price = float(price["price"])    
-                        # target = open_price * (1+profit)
-
-                        # # wait for 5 minutes
-                        # time.sleep(60)
-
-                        sell(winner_pair,buy_price,profit,amount)
+                        sell_by_time = datetime.now() + timedelta(minutes=max_hold_minutes) 
+                        
+                        sell(winner_pair,buy_price,profit,amount,sell_by_time)
                         # client.order_limit_sell(symbol=symbol, quantity=get_pair_balance(winner_pair),price=target)
             else:
                 winner = 0
