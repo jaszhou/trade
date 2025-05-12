@@ -397,9 +397,12 @@ def RSI(pair):
 
 def start(threadname):
         global current_thread_number,winner,winner_pair,winner_score,amount,max_threads
+        print("********************************")
+        print("version: 20250513")
+        print("********************************")
 
         current_thread_number+=1
-        print(f"thread name is {threadname} current thread number is {current_thread_number}")
+        print(f"thread name is {threadname} current thread number is {current_thread_number} ")
         # logging.info(f"thread name is {threadname} current thread number is {current_thread_number}")
 
         
@@ -498,7 +501,7 @@ if __name__ == "__main__":
             print("********************************")
             print("version: 20250513")
             print("********************************")
-            
+
 
             flow_balance = retry(get_flow_balance)
             print(f'flow balance: {flow_balance}')
