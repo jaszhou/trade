@@ -485,6 +485,7 @@ def start(threadname):
 # main entry here
 if __name__ == "__main__":
     # volume_dollar('BNBUSDT')
+    print("version: 20250513")
 
     while True:
             
