@@ -1,3 +1,6 @@
+
+# https://hub.docker.com/repositories/jaszhou2020
+
 import csv
 import json
 import os
@@ -492,6 +495,11 @@ if __name__ == "__main__":
             # threads = []
             # threading.active_count()
             # while current_thread_number < max_threads :
+            print("********************************")
+            print("version: 20250513")
+            print("********************************")
+            
+
             flow_balance = retry(get_flow_balance)
             print(f'flow balance: {flow_balance}')
 
