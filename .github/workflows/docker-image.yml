@@ -17,7 +17,7 @@ jobs:
         DOCKER_USER: ${{secrets.DOCKER_USER}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
         DOCKER_PAT: ${{secrets.DOCKER_PAT}}
-        repository: jaszhou2020/trade:latest
+        repository: jaszhou2020/python:latest
         tags: latest
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PAT
