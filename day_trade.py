@@ -166,8 +166,8 @@ def convert_timestamp_to_datetime(timestamp):
     return datetime.fromtimestamp(timestamp_in_seconds)
 
 def check_expire(sell_by_time: datetime):
-    current = time.time()
-    return sell_by_time < current
+    # current = time.time()
+    return sell_by_time < datetime.now()
 
 # check price from time to time, if reach profit level, sell it
 def sell(pair,open_price,profit,amount,sell_by_time):
