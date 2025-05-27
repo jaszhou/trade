@@ -1,3 +1,6 @@
+
+# https://hub.docker.com/repositories/jaszhou2020
+
 import csv
 import json
 import os
@@ -144,11 +147,32 @@ def get_balance():
     # print(bnb_balance)
     return bnb_balance    
 
-# check price from time to time, if reach profit level, sell it
-def sell(pair,open_price,profit,amount):
-    # print("Total score for {n} is {s}".format(n=name, s=score))
-     print("Pair {p} open price {o} profit {e} amount {a} ".format(p=pair, o=open_price, e=profit, a=amount))
 
+
+def convert_timestamp_to_datetime(timestamp):
+    """
+    Convert a timestamp to a datetime object.
+    
+    Args:
+        timestamp (int): The timestamp to convert.
+        
+    Returns:
+        datetime: The corresponding datetime object.
+    """
+    # Convert timestamp to seconds (if it's in milliseconds)
+    timestamp_in_seconds = timestamp / 1000
+    
+    # Convert to datetime object
+    return datetime.fromtimestamp(timestamp_in_seconds)
+
+def check_expire(sell_by_time: datetime):
+    # current = time.time()
+    return sell_by_time < datetime.now()
+
+# check price from time to time, if reach profit level, sell it
+def sell(pair,open_price,profit,amount,sell_by_time):
+    # print("Total score for {n} is {s}".format(n=name, s=score))
+ 
      while True:
          price = client.get_symbol_ticker(symbol=pair)
          close = float(price["price"])
@@ -160,16 +184,16 @@ def sell(pair,open_price,profit,amount):
          trend = get_trend(pair)
 
          print("{d} -- {p} price {c} rsi {r} buy price {b} target {tg} trend {trend}".format(d=datetime.today(), p=pair, c=round(close,4), r=rsi, b=round(open_price,4), tg=round(target,4), trend=trend))
+         print("Pair {p} open price {o} profit {e} amount {a} sell by {s}".format(p=pair, o=open_price, e=profit, a=amount, s=sell_by_time))
 
         #  print("current price {p}".format(p=close))
          balance = get_pair_balance(pair)
          if balance == 0:
              print("manual override, skipping...")
              break
-
          
-        # either archive target price or force sell
-         if (close-open_price)/open_price > profit or check_expire(sell_by_time):
+         
+         if ((close-open_price)/open_price > profit) or check_expire(sell_by_time):
         #  if (close-open_price)/open_price > profit and rsi > 80 :
          #if abs(close-open_price)/open_price > profit and trend == "down" :
         #  if (close-open_price)/open_price > profit and trend == "down" :
@@ -192,9 +216,7 @@ def sell(pair,open_price,profit,amount):
             time.sleep(60*5)
 
 
-def check_expire(sell_by_time):
-    current = time.time()
-    return sell_by_time < current
+
 
 def check(pair: str, interval: str, time_span: str, limit: int):
     # check if bought twice
@@ -374,9 +396,12 @@ def RSI(pair):
 
 def start(threadname):
         global current_thread_number,winner,winner_pair,winner_score,amount,max_threads
+        print("********************************")
+        print("version: 20250513")
+        print("********************************")
 
         current_thread_number+=1
-        print(f"thread name is {threadname} current thread number is {current_thread_number}")
+        print(f"thread name is {threadname} current thread number is {current_thread_number} ")
         # logging.info(f"thread name is {threadname} current thread number is {current_thread_number}")
 
         
@@ -441,19 +466,10 @@ def start(threadname):
                         order = client.order_market_buy(symbol=winner_pair, quoteOrderQty=amount)
                         
 
-                        global sell_by_time
                         # end of holding period
-                        eoh = datetime.now() + timedelta(minutes=max_hold_minutes) 
-                        sell_by_time = eoh.timestamp()
-
-                        # price = client.get_symbol_ticker(symbol=winner_pair)
-                        # open_price = float(price["price"])    
-                        # target = open_price * (1+profit)
-
-                        # # wait for 5 minutes
-                        # time.sleep(60)
-
-                        sell(winner_pair,buy_price,profit,amount)
+                        sell_by_time = datetime.now() + timedelta(minutes=max_hold_minutes) 
+                        
+                        sell(winner_pair,buy_price,profit,amount,sell_by_time)
                         # client.order_limit_sell(symbol=symbol, quantity=get_pair_balance(winner_pair),price=target)
             else:
                 winner = 0
@@ -479,12 +495,18 @@ def start(threadname):
 # main entry here
 if __name__ == "__main__":
     # volume_dollar('BNBUSDT')
+    print("version: 20250513")
 
     while True:
             
             # threads = []
             # threading.active_count()
             # while current_thread_number < max_threads :
+            print("********************************")
+            print("version: 20250513")
+            print("********************************")
+
+
             flow_balance = retry(get_flow_balance)
             print(f'flow balance: {flow_balance}')
 

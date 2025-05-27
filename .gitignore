@@ -69,6 +69,8 @@ instance/
 # Scrapy stuff:
 .scrapy
 .env
+.DS_Store
+*.csv
 
 
 # Sphinx documentation
