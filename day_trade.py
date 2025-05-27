@@ -196,12 +196,11 @@ def check_expire(sell_by_time):
     current = time.time()
     return sell_by_time < current
 
-def check(pair,interval):
-
+def check(pair: str, interval: str, time_span: str, limit: int):
     # check if bought twice
     if get_trade(pair) > 1:
         print(f"already bought twice {pair}, skipping ...")
-        return 
+        return
     
     #skip existing pairs
 
@@ -237,11 +236,11 @@ def check(pair,interval):
     # klines = client.get_historical_klines(pair, 
     # Client.KLINE_INTERVAL_15MINUTE, "20 minute ago UTC")
 
-    time_span="1 hour ago UTC"
+    # time_span="1 hour ago UTC"
 
     # request historical candle (or klines) data
     # bars = client.get_historical_klines(pair, interval, str(timestamp), limit=5)
-    bars = client.get_historical_klines(pair, interval, time_span, limit=5)
+    bars = client.get_historical_klines(pair=pair, interval=interval, time_span=time_span, limit=limit)
     
     for line in bars:
         del line[6:]
@@ -406,8 +405,13 @@ def start(threadname):
                 tries = 5
                 for i in range(tries):
                     try:
+                        interval = '1d'
+                        time_span = '5 day ago UTC'
+                        limit = 5
                         # do stuff
-                        check(pair,'15m')
+                        # check(pair,'15m')
+                        # bars = client.get_historical_klines(pair=pair, interval=interval, time_span=time_span, limit=limit)
+                        check(pair=pair, interval=interval, time_span=time_span, limit=limit)
                     except:
                         time.sleep(1)
                         continue
