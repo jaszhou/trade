@@ -342,7 +342,7 @@ if __name__ == "__main__":
 
     while True:
         print("********************************")
-        print("version: 20250527")
+        print("version: 20250816")
         print("********************************")
 
         flow_balance = retry(get_flow_balance)
