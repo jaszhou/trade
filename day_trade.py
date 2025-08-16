@@ -17,6 +17,7 @@ from binance import ThreadedWebsocketManager
 import random
 from record import *
 import math
+import asyncio
 
 MAX_HOLD_MINUTES = 60 * 12
 MIN_BALANCE = 100
@@ -154,7 +155,7 @@ class TradeBot:
     # check price from time to time, if reach profit level, sell it
 
 
-    def sell(self, pair, open_price, profit, amount, sell_by_time):
+    async def sell(self, pair, open_price, profit, amount, sell_by_time):
         while True:
             price = self.client.get_symbol_ticker(symbol=pair)
             close = float(price["price"])
@@ -182,12 +183,12 @@ class TradeBot:
 
                 break  # break of sell loop
             else:
-                time.sleep(60 * 5)
+                await asyncio.sleep(60 * 5)
 
 
 
 
-    def check(self, pair: str, interval: str, time_span: str, limit: int):
+    async def check(self, pair: str, interval: str, time_span: str, limit: int):
         # check if bought twice
         if get_trade(pair) > 1:
             print(f"already bought twice {pair}, skipping ...")
@@ -282,7 +283,7 @@ class TradeBot:
 
 
 
-    def start(self, threadname):
+    async def start(self, threadname):
         self.current_thread_number += 1
         print(f"thread name is {threadname} current thread number is {self.current_thread_number}")
 
@@ -307,7 +308,7 @@ class TradeBot:
                         interval = '1d'
                         time_span = '5 day ago UTC'
                         limit = 5
-                        self.check(pair=pair, interval=interval, time_span=time_span, limit=limit)
+                        await self.check(pair=pair, interval=interval, time_span=time_span, limit=limit)
                     except Exception as e:
                         print(f"An error occurred: {e}")
                         time.sleep(1)
@@ -324,20 +325,20 @@ class TradeBot:
                     self.reset_winner()
                     order = self.client.order_market_buy(symbol=self.winner_pair, quoteOrderQty=self.amount)
                     sell_by_time = datetime.now() + timedelta(minutes=MAX_HOLD_MINUTES)
-                    self.sell(self.winner_pair, self.buy_price, self.profit, self.amount, sell_by_time)
+                    await self.sell(self.winner_pair, self.buy_price, self.profit, self.amount, sell_by_time)
             else:
                 self.reset_winner()
                 print("no winner and sleep for 1 min")
-                time.sleep(SLEEP_TIME)
+                await asyncio.sleep(SLEEP_TIME)
         else:
             self.reset_winner()
             st = math.ceil(100 * random.random())
             print(f"Sleep for {st} seconds, BTC is down or FLOW balance is 0")
-            time.sleep(st)
+            await asyncio.sleep(st)
 
         self.current_thread_number -= 1
 
-if __name__ == "__main__":
+async def main():
     bot = TradeBot()
 
     while True:
@@ -353,9 +354,7 @@ if __name__ == "__main__":
         icp_balance = retry(get_icp_balance)
         print(f'icp balance: {icp_balance}')
         if icp_balance:
-            # bot.max_threads = icp_balance
-            bot.max_threads = 2
-
+            bot.max_threads = round(icp_balance)
 
         bot.reset_winner()
 
@@ -363,14 +362,15 @@ if __name__ == "__main__":
         get_gainer()
 
         print(f'max threads: {bot.max_threads}')
-        while threading.active_count() < bot.max_threads:
-            thread = threading.Thread(target=bot.start, args=(f"Thead-{bot.current_thread_number}",))
-            thread.start()
-            print(f"active count is {threading.active_count()} max thread {bot.max_threads}")
+        tasks = []
+        for i in range(bot.max_threads):
+            task = asyncio.create_task(bot.start(f"Task-{i}"))
+            tasks.append(task)
 
-            st = math.ceil(50 * random.random())
-            print(f'sleep for {st} seconds')
-            time.sleep(st)
+        await asyncio.gather(*tasks)
 
-        print("sleep for 10 minutes")
-        time.sleep(10 * 60)
+        # print("sleep for 10 minutes")
+        # await asyncio.sleep(10 * 60)
+
+if __name__ == "__main__":
+    asyncio.run(main())
