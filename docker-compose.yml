@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  trade:
+    build: .
+    environment:
+      - PYTHONUNBUFFERED=1
+      - binance_api=${binance_api}
+      - binance_secret=${binance_secret}

@@ -41,7 +41,7 @@ class TradeBot:
     def check_btc_price(self):
         ## main
         
-        candles = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_1DAY)
+        candles = self.client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_1DAY)
         # candles = client.get_klines(symbol=pair, interval=interval)
         for line in candles:
             del line[6:]
@@ -59,13 +59,13 @@ class TradeBot:
         return close > open 
 
 
-    def check_price(pair):
+    def check_price(self, pair):
         ## main
         tries = 5
         for i in range(tries):
                 try:
                     # do stuff
-                    candles = client.get_klines(symbol=pair, interval=Client.KLINE_INTERVAL_15MINUTE)
+                    candles = self.client.get_klines(symbol=pair, interval=Client.KLINE_INTERVAL_15MINUTE)
                 except:
                     time.sleep(3)
                     continue
@@ -81,13 +81,13 @@ class TradeBot:
         # print(candles_df.head())
         return candles_df
 
-    def check_day_price(pair):
+    def check_day_price(self, pair):
         ## main
         tries = 5
         for i in range(tries):
                 try:
                     # do stuff
-                    candles = client.get_klines(symbol=pair, interval=Client.KLINE_INTERVAL_1DAY)
+                    candles = self.client.get_klines(symbol=pair, interval=Client.KLINE_INTERVAL_1DAY)
                 except:
                     #client = Client(api_key, api_secret)
                     continue
@@ -111,27 +111,27 @@ class TradeBot:
         return close > open 
 
 
-    def get_pair_balance(pair):
+    def get_pair_balance(self, pair):
         # pair ='FTMUSDT'
         symbol = pair[:-4]
         # print(symbol)
-        bnb_balance = client.get_asset_balance(asset=symbol)
+        bnb_balance = self.client.get_asset_balance(asset=symbol)
         bnb_balance = float(bnb_balance['free'])
         # print(bnb_balance)
         return bnb_balance    
 
-    def get_balance():
+    def get_balance(self):
         # pair ='FTMUSDT'
         symbol = 'USDT'
         # print(symbol)
-        bnb_balance = client.get_asset_balance(asset=symbol)
+        bnb_balance = self.client.get_asset_balance(asset=symbol)
         bnb_balance = float(bnb_balance['free'])
         # print(bnb_balance)
         return bnb_balance    
 
 
 
-    def convert_timestamp_to_datetime(timestamp):
+    def convert_timestamp_to_datetime(self, timestamp):
         """
         Convert a timestamp to a datetime object.
         
@@ -147,7 +147,7 @@ class TradeBot:
         # Convert to datetime object
         return datetime.fromtimestamp(timestamp_in_seconds)
 
-    def check_expire(sell_by_time: datetime):
+    def check_expire(self, sell_by_time: datetime):
         # current = time.time()
         return sell_by_time < datetime.now()
 
@@ -161,7 +161,7 @@ class TradeBot:
 
             target = open_price * (1 + profit)
             rsi = self.RSI(pair)
-            trend = self.get_trend(pair)
+            trend = self.check_btc_price()
 
             print("{d} -- {p} price {c} rsi {r} buy price {b} target {tg} trend {trend}".format(
                 d=datetime.today(), p=pair, c=round(close, 4), r=rsi, b=round(open_price, 4), tg=round(target, 4), trend=trend))
@@ -197,7 +197,7 @@ class TradeBot:
         if self.get_pair_balance(pair) > 0:
             return
 
-        bars = self.client.get_historical_klines(pair=pair, interval=interval, time_span=time_span, limit=limit)
+        bars = self.client.get_historical_klines(symbol=pair, interval=interval, start_str=time_span, limit=limit)
         for line in bars:
             del line[6:]
 
