@@ -33,20 +33,18 @@ def pandas_rsi(df: pd.DataFrame, window_length: int = 14, output: str = None, pr
     df['avg_loss'] = df['loss'].rolling(window=window_length, min_periods=window_length).mean()[:window_length+1]
 
     # Calculate Average Gains
-    for i, row in enumerate(df['avg_gain'].iloc[window_length+1:]):
-        df['avg_gain'].iloc[i + window_length + 1] =\
-            (df['avg_gain'].iloc[i + window_length] *
-             (window_length - 1) +
-             df['gain'].iloc[i + window_length + 1])\
-            / window_length
+    for i in range(window_length + 1, len(df)):
+        df.loc[df.index[i], 'avg_gain'] = (
+            df.loc[df.index[i - 1], 'avg_gain'] * (window_length - 1) +
+            df.loc[df.index[i], 'gain']
+        ) / window_length
 
     # Calculate Average Losses
-    for i, row in enumerate(df['avg_loss'].iloc[window_length+1:]):
-        df['avg_loss'].iloc[i + window_length + 1] =\
-            (df['avg_loss'].iloc[i + window_length] *
-             (window_length - 1) +
-             df['loss'].iloc[i + window_length + 1])\
-            / window_length
+    for i in range(window_length + 1, len(df)):
+        df.loc[df.index[i], 'avg_loss'] = (
+            df.loc[df.index[i - 1], 'avg_loss'] * (window_length - 1) +
+            df.loc[df.index[i], 'loss']
+        ) / window_length
 
     # Calculate RS Values
     df['rs'] = df['avg_gain'] / df['avg_loss']

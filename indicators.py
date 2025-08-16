@@ -82,7 +82,7 @@ def volume_dollar(pair):
     # print(type(int(candles_df.iloc[-1]['volume'])))
 
     # v = candles_df.iloc[-1]['volume']
-    c = candles_df.iloc[-1]['close']
+    c = float(candles_df.iloc[-1]['close'])
     a = v * c 
 
     print(f'close {c} volume {v}')

@@ -122,8 +122,8 @@ def get_trend(pair):
 
     # close = float(last_row_df['close'])
 
-    open = float(last_row_df['open'])
-    close = float(last_row_df['close'])
+    open = float(last_row_df['open'].iloc[0])
+    close = float(last_row_df['close'].iloc[0])
 
     # print(f"open: {open}")
 

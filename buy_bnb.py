@@ -72,8 +72,8 @@ def check_btc_price():
     # print(candles_df.head())
 
     last_row_df = candles_df.iloc[-1:]
-    close = float(last_row_df['close'])
-    open = float(last_row_df['open'])
+    close = float(last_row_df['close'].iloc[0])
+    open = float(last_row_df['open'].iloc[0])
     
     
     return close > open 

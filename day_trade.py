@@ -53,8 +53,8 @@ class TradeBot:
         # print(candles_df.head())
 
         last_row_df = candles_df.iloc[-1:]
-        close = last_row_df['close'].item()
-        open = last_row_df['open'].item()
+        close = float(last_row_df['close'].iloc[0])
+        open = float(last_row_df['open'].iloc[0])
               
         return close > open 
 
@@ -104,8 +104,8 @@ class TradeBot:
         # print(candles_df.head())
 
         last_row_df = candles_df.iloc[-1:]
-        close = float(last_row_df['close'])
-        open = float(last_row_df['open'])
+        close = float(last_row_df['close'].iloc[0])
+        open = float(last_row_df['open'].iloc[0])
         
         
         return close > open 
@@ -209,24 +209,24 @@ class TradeBot:
         last_two_df = df.iloc[-2:-1]
         last_three_df = df.iloc[-3:-2]
 
-        close = float(last_row_df['close'])
-        low = float(last_row_df['low'])
-        high = float(last_row_df['high'])
-        open_price = float(last_row_df['open'])
+        close = float(last_row_df['close'].iloc[0])
+        low = float(last_row_df['low'].iloc[0])
+        high = float(last_row_df['high'].iloc[0])
+        open_price = float(last_row_df['open'].iloc[0])
 
-        close2 = float(last_two_df['close'])
-        low2 = float(last_two_df['low'])
-        high2 = float(last_two_df['high'])
-        open_price2 = float(last_two_df['open'])
+        close2 = float(last_two_df['close'].iloc[0])
+        low2 = float(last_two_df['low'].iloc[0])
+        high2 = float(last_two_df['high'].iloc[0])
+        open_price2 = float(last_two_df['open'].iloc[0])
 
-        close3 = float(last_three_df['close'])
-        low3 = float(last_three_df['low'])
-        high3 = float(last_three_df['high'])
-        open_price3 = float(last_three_df['open'])
+        close3 = float(last_three_df['close'].iloc[0])
+        low3 = float(last_three_df['low'].iloc[0])
+        high3 = float(last_three_df['high'].iloc[0])
+        open_price3 = float(last_three_df['open'].iloc[0])
 
-        last_two_volume = float(last_two_df['volume'])
-        last_three_volume = float(last_three_df['volume'])
-        today_volume = float(last_row_df['volume'])
+        last_two_volume = float(last_two_df['volume'].iloc[0])
+        last_three_volume = float(last_three_df['volume'].iloc[0])
+        today_volume = float(last_row_df['volume'].iloc[0])
 
         vol_ratio = today_volume / last_two_volume if last_two_volume > 1000 else 0.1
         vol_ratio2 = last_two_volume / last_three_volume if last_three_volume > 1000 else 0.1

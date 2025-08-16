@@ -143,7 +143,7 @@ def check(pair,interval):
 	# print("last row Of Dataframe: ")
 	# print(last_row_df)
 
-	last_volume=float(last_two_df['volume'])
+	last_volume=float(last_two_df['volume'].iloc[0])
 
 	# candles = client.get_klines(symbol=pair, interval=Client.KLINE_INTERVAL_30MINUTE)
 	# candles = client.get_klines(symbol=pair, interval=interval)
@@ -181,12 +181,12 @@ def check(pair,interval):
 	# open = float(last_row_df['open'])
 	# today_volume = float(last_row_df['volume'])
 
-	close = float(last_row_df['close'])
-	low = float(last_row_df['low'])
-	high = float(last_row_df['high'])
-	open = float(last_row_df['open'])
+	close = float(last_row_df['close'].iloc[0])
+	low = float(last_row_df['low'].iloc[0])
+	high = float(last_row_df['high'].iloc[0])
+	open = float(last_row_df['open'].iloc[0])
 
-	today_volume = float(last_row_df['volume'])
+	today_volume = float(last_row_df['volume'].iloc[0])
 
 	head = abs(high-close)
 	tail = abs(close-low)
