@@ -353,7 +353,9 @@ if __name__ == "__main__":
         icp_balance = retry(get_icp_balance)
         print(f'icp balance: {icp_balance}')
         if icp_balance:
-            bot.max_threads = icp_balance
+            # bot.max_threads = icp_balance
+            bot.max_threads = 2
+
 
         bot.reset_winner()
 

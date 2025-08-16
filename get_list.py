@@ -25,10 +25,13 @@ def get_usdt_pairs(num=50):
 
     
     df = pd.DataFrame(symbols)
-    df = df[df.symbol.str.contains('USDT')]
+    df = df[df.symbol.str.endswith('USDT')]
+
     df = df[~df.symbol.str.contains('DOWN')]
     df = df[~df.symbol.str.contains('UP')]
     df = df[~df.symbol.str.startswith('USD')] # remove USD* pairs
+
+
 
     df = df.astype({'volume':'float'})
     df = df.astype({'lastPrice':'float'})

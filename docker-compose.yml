@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   trade:
-    build: .
+    image: jaszhou2020/trade:latest
     environment:
       - PYTHONUNBUFFERED=1
       - binance_api=${binance_api}
