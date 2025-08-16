@@ -371,3 +371,6 @@ if __name__ == "__main__":
             st = math.ceil(50 * random.random())
             print(f'sleep for {st} seconds')
             time.sleep(st)
+
+        print("sleep for 10 minutes")
+        time.sleep(10 * 60)
